@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 285" role="img" aria-label="Escudo de RevLeads con flecha ascendente">
+  <defs>
+    <linearGradient id="b" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#800000"/>
+      <stop offset="1" stop-color="#5c0000"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#b)" fill-rule="evenodd" d="M120 6 L228 40 V140 C228 208 178 252 120 278 C62 252 12 208 12 140 V40 Z M120 28 L206 56 V140 C206 194 168 228 120 250 C72 228 34 194 34 140 V56 Z"/>
+  <path fill="none" stroke="#c49a5b" stroke-width="2.5" d="M120 6 L228 40"/>
+  <path fill="none" stroke="url(#b)" stroke-width="17" stroke-linejoin="round" d="M72 168 V70 H114 A31 31 0 0 1 114 132 H72 M106 132 L140 176"/>
+  <g fill="#333333" stroke="#333333" stroke-linejoin="round">
+    <path fill="none" stroke-width="19" d="M48 196 L82 166 L104 184 L168 118"/>
+    <path stroke-width="7" d="M198 80 L152 92 L186 126 Z"/>
+  </g>
+  <g fill="#e5e4e2" stroke="#e5e4e2" stroke-linejoin="round">
+    <path fill="none" stroke-width="15" d="M48 196 L82 166 L104 184 L168 118"/>
+    <path stroke-width="3" d="M198 80 L152 92 L186 126 Z"/>
+  </g>
+</svg>
