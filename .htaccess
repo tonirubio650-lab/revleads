@@ -62,6 +62,11 @@
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
 
+# ----- Archivos privados / de desarrollo: nunca se sirven -----
+<FilesMatch "(^\.env.*|\.(md|ps1|mjs)$)">
+  Require all denied
+</FilesMatch>
+
 # ----- Correct MIME types (some shared hosts default wrong) -----
 <IfModule mod_mime.c>
   AddType image/webp .webp

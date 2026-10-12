@@ -19,7 +19,7 @@
 <body>
   <a href="#contenido" class="skip-link">Saltar al contenido</a>
 
-  <header class="site-header" data-header>
+  <header class="site-header">
     <span class="progress" aria-hidden="true"><i data-progress></i></span>
     <div class="wrap header-inner">
       <a href="#inicio" class="brand" aria-label="RevLeads, inicio">
@@ -199,7 +199,7 @@
     <section id="demo" class="section on-dark section-demo">
       <div class="wrap demo-grid">
         <div class="reveal">
-          <h2 data-split="words">Agenda tu demo gratuita</h2>
+          <h2 class="section-title" data-split="words">Agenda tu demo gratuita</h2>
           <p class="demo-lead">Cuéntanos cómo trabajas y te enseñamos, con tu caso, cómo dejar de perder clientes. Te contactamos en menos de 24&nbsp;horas laborables. Sin compromiso.</p>
         </div>
 
@@ -207,22 +207,22 @@
           <div class="field">
             <label for="nombre">Nombre y apellidos</label>
             <input id="nombre" name="nombre" type="text" autocomplete="name" required placeholder="Ej.: Carlos Pérez…" aria-describedby="err-nombre" />
-            <p class="err" id="err-nombre" data-for="nombre"></p>
+            <p class="err" id="err-nombre"></p>
           </div>
           <div class="field">
             <label for="telefono">Teléfono</label>
             <input id="telefono" name="telefono" type="tel" inputmode="tel" autocomplete="tel" required placeholder="Ej.: 600 123 456…" aria-describedby="err-telefono" />
-            <p class="err" id="err-telefono" data-for="telefono"></p>
+            <p class="err" id="err-telefono"></p>
           </div>
           <div class="field">
             <label for="email">Email</label>
             <input id="email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" required placeholder="Ej.: carlos@concesionario.es…" aria-describedby="err-email" />
-            <p class="err" id="err-email" data-for="email"></p>
+            <p class="err" id="err-email"></p>
           </div>
           <div class="field">
             <label for="mensaje">Mensaje</label>
             <textarea id="mensaje" name="mensaje" rows="4" required placeholder="Cuéntanos qué necesitas…" aria-describedby="err-mensaje"></textarea>
-            <p class="err" id="err-mensaje" data-for="mensaje"></p>
+            <p class="err" id="err-mensaje"></p>
           </div>
           <div class="trap" aria-hidden="true">
             <label>No rellenar <input type="text" name="web" tabindex="-1" autocomplete="off" /></label>
@@ -242,13 +242,12 @@
     <div class="wrap footer-inner">
       <span class="footer-logo"><img src="assets/img/logotipo-pie-mono.png" alt="RevLeads" width="878" height="228" loading="lazy" /></span>
       <p class="footer-values"><span>Confianza</span><span>Responsabilidad</span><span>Adaptabilidad</span></p>
-      <p class="footer-copy">© <span data-year>2026</span> RevLeads. Todos los derechos reservados.</p>
+      <p>©<span data-year>2026</span> RevLeads. Todos los derechos reservados.</p>
     </div>
   </footer>
 
   <script defer src="lib/gsap.min.js?v=20261001"></script>
   <script defer src="lib/ScrollTrigger.min.js?v=20261001"></script>
-  <script defer src="lib/manifest.js?v=20261001"></script>
   <script defer src="main.js?v=20261001"></script>
 </body>
 </html>

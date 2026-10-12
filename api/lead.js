@@ -2,9 +2,10 @@
 // sin exponer la URL del webhook en el navegador. La URL vive en MAKE_WEBHOOK_URL.
 "use strict";
 
-const hits = new Map();
 const MAX_HITS = 5;
 const WINDOW_MS = 10 * 60 * 1000;
+const MAX_TRACKED_IPS = 5000;
+const hits = new Map(); // ip -> marcas de tiempo (límite "best effort" por instancia)
 
 function send(res, status, body) {
   res.statusCode = status;
@@ -16,6 +17,19 @@ function clean(v, max) {
   return typeof v === "string" ? v.trim().slice(0, max) : "";
 }
 
+function tooManyRequests(ip, now) {
+  if (hits.size > MAX_TRACKED_IPS) {
+    for (const [key, times] of hits) {
+      if (now - times[times.length - 1] >= WINDOW_MS) hits.delete(key);
+    }
+  }
+  const recent = (hits.get(ip) || []).filter((t) => now - t < WINDOW_MS);
+  if (recent.length >= MAX_HITS) return true;
+  recent.push(now);
+  hits.set(ip, recent);
+  return false;
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return send(res, 405, { ok: false, error: "Método no permitido." });
 
@@ -24,13 +38,9 @@ module.exports = async function handler(req, res) {
 
   const fwd = (req.headers["x-forwarded-for"] || "").split(",")[0].trim();
   const ip = fwd || (req.socket && req.socket.remoteAddress) || "desconocida";
-  const now = Date.now();
-  const recent = (hits.get(ip) || []).filter((t) => now - t < WINDOW_MS);
-  if (recent.length >= MAX_HITS) {
+  if (tooManyRequests(ip, Date.now())) {
     return send(res, 429, { ok: false, error: "Demasiados envíos. Inténtalo de nuevo en unos minutos." });
   }
-  recent.push(now);
-  hits.set(ip, recent);
 
   let data = req.body;
   if (typeof data === "string") {
@@ -53,15 +63,15 @@ module.exports = async function handler(req, res) {
   if (mensaje.length < 5) errors.mensaje = "Cuéntanos brevemente qué necesitas.";
   if (Object.keys(errors).length) return send(res, 400, { ok: false, errors });
 
-  try {
-    const r = await fetch(webhook, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nombre, telefono, email, mensaje }),
-    });
-    if (!r.ok) throw new Error(String(r.status));
-    return send(res, 200, { ok: true });
-  } catch (_) {
+  const r = await fetch(webhook, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ nombre, telefono, email, mensaje }),
+    signal: AbortSignal.timeout(8000),
+  }).catch(() => null);
+
+  if (!r || !r.ok) {
     return send(res, 502, { ok: false, error: "No hemos podido enviar tu solicitud. Inténtalo de nuevo en unos minutos." });
   }
+  return send(res, 200, { ok: true });
 };

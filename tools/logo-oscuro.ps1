@@ -1,5 +1,5 @@
 # Solo desarrollo: genera el logotipo para fondos oscuros a partir de la hoja de marca
-# (versión del banner azul: escudo dorado + texto claro, con los colores exactos de la paleta).
+# (versión del banner azul) en una sola tinta clara (#F4F2EC de la paleta). Salida: assets/img/logotipo-pie-mono.png
 Add-Type -AssemblyName System.Drawing
 Add-Type -TypeDefinition @'
 using System; using System.Drawing; using System.Drawing.Imaging;
@@ -16,7 +16,7 @@ public static class LogoDark {
     for (int i = 0; i < w; i++) for (int j = 0; j < h; j++) {
       Color p = c.GetPixel(i, j);
       double[] pv = { p.R, p.G, p.B };
-      double bestRes = double.MaxValue, bestT = 0; int bestK = 0;
+      double bestRes = double.MaxValue, bestT = 0;
       for (int k = 0; k < fgs.Length; k++) {
         double[] d = { fgs[k][0]-bg[0], fgs[k][1]-bg[1], fgs[k][2]-bg[2] };
         double dd = d[0]*d[0]+d[1]*d[1]+d[2]*d[2];
@@ -24,7 +24,7 @@ public static class LogoDark {
         t = Math.Max(0, Math.Min(1, t));
         double e0 = pv[0]-(bg[0]+t*d[0]), e1 = pv[1]-(bg[1]+t*d[1]), e2 = pv[2]-(bg[2]+t*d[2]);
         double res = e0*e0+e1*e1+e2*e2;
-        if (res < bestRes) { bestRes = res; bestT = t; bestK = k; }
+        if (res < bestRes) { bestRes = res; bestT = t; }
       }
       double a = bestT < 0.06 ? 0 : Math.Min(1, bestT * 1.08);
       if (a > 0.5) { if (i<minX) minX=i; if (j<minY) minY=j; if (i>maxX) maxX=i; if (j>maxY) maxY=j; }
@@ -46,7 +46,7 @@ public static class LogoDark {
 }
 '@ -ReferencedAssemblies System.Drawing
 $d = Split-Path -Parent $PSScriptRoot
-[LogoDark]::Run("$d\assets\logo.png", "$d\assets\img\logotipo-pie-mono.png", 432, 288, 552, 166, 2)
+[LogoDark]::Run("$PSScriptRoot\hoja-de-marca.png", "$d\assets\img\logotipo-pie-mono.png", 432, 288, 552, 166, 2)
 $img = [System.Drawing.Image]::FromFile("$d\assets\img\logotipo-pie-mono.png")
 $b = New-Object System.Drawing.Bitmap ($img.Width + 40), ($img.Height + 40)
 $g = [System.Drawing.Graphics]::FromImage($b); $g.Clear([System.Drawing.ColorTranslator]::FromHtml("#1B100C")); $g.DrawImage($img, 20, 20)
